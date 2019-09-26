@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import { graphql } from 'react-apollo'
 import { getAuthorsQuery, addBookMutation, getBooksQuery } from '../queries/queries'
 import { flowRight as compose } from 'lodash';
-
+import { Col, Row, Form, Button } from 'react-bootstrap';
 class AddBook extends Component {
 
   constructor (props) {
@@ -20,16 +20,16 @@ class AddBook extends Component {
       return (<div> Loading ... </div> )
     } else {
       return (
-        <select onChange={ e => { this.setState({ authorId: e.target.value }) } }>
+        <Form.Control as="select" onChange={ e => { this.setState({ authorId: e.target.value }) } }>
           <option value=''>Select one...</option>
-        {
-          data.authors.map(book => {
-            return (
-              <option key={ book.id } value={ book.id }> { book.name }</option>
-            )
-          })
-        }
-        </select>
+          {
+            data.authors.map(book => {
+              return (
+                <option key={ book.id } value={ book.id }> { book.name }</option>
+              )
+            })
+          }
+        </Form.Control>
       )
     }
   }
@@ -50,24 +50,34 @@ class AddBook extends Component {
 
   render () {
     return (
-      <div>
-        <h1>Add book:</h1>
-        <form id="add-book" onSubmit={ this.submitForm.bind(this) }>
-          <div className="field">
-            <label>Book name:</label>
-            <input type="text" onChange={ e => { this.setState({ name: e.target.value }) } } />
-          </div>
-          <div className="field">
-            <label>Genre:</label>
-            <input type="text" onChange={ e => { this.setState({ genre: e.target.value }) } } />
-          </div>
-          <div className="field">
-            <label>Book name:</label>
-            { this.generateAuthorsSelect() }
-          </div>
-          <input type="submit" value="Add Book"></input>
-        </form>
-      </div>
+      <Row>
+        <Col md={{ span: 6, offset: 3 }}>
+          <h1 className="text-center">Add book:</h1>
+          <Form id="add-book" onSubmit={ this.submitForm.bind(this) }>
+            <Form.Group>
+              <Form.Label>Book name:</Form.Label>
+              <Form.Control type="text" 
+                onChange={ e => { this.setState({ name: e.target.value }) } } 
+                placeholder="Enter book name" 
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>Genre:</Form.Label>
+              <Form.Control type="text" 
+                onChange={ e => { this.setState({ genre: e.target.value }) } } 
+                placeholder="Enter genre" 
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>Author:</Form.Label>
+              { this.generateAuthorsSelect() }
+            </Form.Group>
+            <Col md={{ span: 6, offset: 3 }}>
+              <Button type="submit" variant="primary">Add Book</Button>
+            </Col>
+          </Form>
+        </Col>
+      </Row>
     )
   }
 }

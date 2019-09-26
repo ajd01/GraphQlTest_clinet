@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import { graphql } from 'react-apollo' 
 import { getBooksQuery } from '../queries/queries'
 import BookDetails from './BookDetails'
+import { Col, Row, Jumbotron, Container, Button } from 'react-bootstrap';
 
 class BookList extends Component {
 
@@ -19,7 +20,9 @@ class BookList extends Component {
     } else {
       return data.books.map(book => {
         return (
-          <li key={ book.id } onClick={ e =>{ this.setState({ selectBook: book.id }) } }> { book.name }</li>
+          <Button variant="light" key={ book.id } onClick={ e =>{ this.setState({ selectBook: book.id }) } }>
+            { book.name }
+          </Button>
         )
       })
     }
@@ -27,13 +30,19 @@ class BookList extends Component {
 
   render () {
     return (
-      <div>
-        <ul id="book.list">
-          { this.displayBooks() }
-        </ul>
-        <BookDetails bookId={ this.state.selectBook } />
-      </div>
-      
+      <Row>
+        <Col lg="6">
+          <Jumbotron fluid>
+            <Container>
+              <h1>List of books</h1>
+              { this.displayBooks() }
+            </Container>
+          </Jumbotron>
+        </Col>
+        <Col lg="6">
+          <BookDetails bookId={ this.state.selectBook } />
+        </Col>
+      </Row>
     )
   }
 }
